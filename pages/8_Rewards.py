@@ -1,117 +1,39 @@
 import streamlit as st
-
-def load_css():
-
-    with open(
-        "assets/style.css"
-    ) as f:
-
-        st.markdown(
-            f"<style>{f.read()}</style>",
-            unsafe_allow_html=True
-        )
+from components import load_css
 
 load_css()
 
-from database import (
-    get_user_rewards,
-    get_badges
-)
-
-st.title("🏆 Rewards & Badges")
-
-USER_ID = 1
-
-reward_df = get_user_rewards(USER_ID)
-
-points = 0
-
-if not reward_df.empty:
-    points = reward_df["points"].sum()
+st.title("🏆 Rewards")
 
 st.metric(
-    "FoodLink Points",
-    points
+    "Points",
+    "1250"
 )
 
-st.divider()
+c1,c2,c3,c4 = st.columns(4)
 
-st.subheader("Badges Earned")
-
-badges = get_badges(USER_ID)
-
-if badges.empty:
-
-    st.info(
-        "No badges earned yet."
+with c1:
+    st.success(
+        "🥇 First Donation"
     )
 
-else:
+with c2:
+    st.success(
+        "🌱 Eco Champion"
+    )
 
-    cols = st.columns(4)
+with c3:
+    st.success(
+        "🍽 Food Saver"
+    )
 
-    for i, badge in enumerate(
-        badges["badge_name"]
-    ):
+with c4:
+    st.success(
+        "🏅 10 Donations"
+    )
 
-        with cols[i % 4]:
-
-            st.success(
-                f"🏅 {badge}"
-            )
-
-st.divider()
-
-st.subheader(
-    "Donation Progress"
-)
-
-goal = 10
-
-donations_completed = 6
-
-progress = (
-    donations_completed / goal
-)
-
-st.progress(progress)
+st.progress(0.8)
 
 st.write(
-    f"{donations_completed}/{goal} Donations"
+    "8 / 10 Donations"
 )
-
-st.divider()
-
-st.subheader(
-    "How FoodLink Works"
-)
-
-st.markdown("""
-### LIST
-
-Identify surplus food.
-
-⬇️
-
-### POST
-
-Create food listing.
-
-⬇️
-
-### MATCH
-
-NGOs discover food.
-
-⬇️
-
-### CLAIM
-
-NGOs request donation.
-
-⬇️
-
-### COLLECT
-
-Pickup and delivery.
-""")

@@ -1,48 +1,29 @@
 import streamlit as st
-
-def load_css():
-
-    with open(
-        "assets/style.css"
-    ) as f:
-
-        st.markdown(
-            f"<style>{f.read()}</style>",
-            unsafe_allow_html=True
-        )
+from components import load_css
 
 load_css()
 
-from database import (
-    get_notifications
-)
-
 st.title("👤 Profile")
 
-user_name = st.session_state.get(
-    "name",
-    "Demo User"
+st.image(
+    "https://via.placeholder.com/150",
+    width=120
 )
 
-user_role = st.session_state.get(
-    "role",
-    "Donor"
+st.subheader(
+    "Sakshi Sheorey"
 )
-
-st.subheader(user_name)
 
 st.write(
-    f"Role: {user_role}"
+    "Donor"
 )
-
-st.divider()
 
 c1,c2,c3 = st.columns(3)
 
 with c1:
     st.metric(
         "Donations",
-        12
+        15
     )
 
 with c2:
@@ -54,53 +35,27 @@ with c2:
 with c3:
     st.metric(
         "NGOs Helped",
-        8
+        12
     )
 
 st.divider()
 
-menu = st.radio(
-    "Navigation",
-    [
-        "My Donations",
-        "Notifications",
-        "Settings",
-        "Help & Support",
-        "About FoodLink"
-    ]
+st.button(
+    "Notifications",
+    use_container_width=True
 )
 
-if menu == "Notifications":
+st.button(
+    "Settings",
+    use_container_width=True
+)
 
-    st.subheader(
-        "Notifications"
-    )
+st.button(
+    "Help & Support",
+    use_container_width=True
+)
 
-    notifications = get_notifications(1)
-
-    if notifications.empty:
-
-        st.info(
-            "No notifications."
-        )
-
-    else:
-
-        for _, row in notifications.iterrows():
-
-            st.info(
-                row["message"]
-            )
-
-if menu == "About FoodLink":
-
-    st.markdown("""
-    ## FoodLink
-
-    Connecting surplus food
-    with those who need it most.
-
-    Reduce waste.
-    Increase impact.
-    Strengthen communities.
-    """)
+st.button(
+    "About FoodLink",
+    use_container_width=True
+)

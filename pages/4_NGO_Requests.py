@@ -1,116 +1,33 @@
 import streamlit as st
-
-from turtle import st
-
-
-def load_css():
-
-    with open(
-        "assets/style.css"
-    ) as f:
-
-        st.markdown(
-            f"<style>{f.read()}</style>",
-            unsafe_allow_html=True
-        )
+from components import load_css
 
 load_css()
 
-from database import get_requests
-from database import get_connection
-
 st.title("📨 NGO Requests")
 
-requests_df = get_requests()
+for i in range(5):
 
-if requests_df.empty:
+    st.markdown(f"""
+    <div class="food-card">
+        <h4>Helping Hands NGO</h4>
+        <p>Requested: 20kg Cooked Food</p>
+        <p>Distance: 2 km</p>
+    </div>
+    """,
+    unsafe_allow_html=True)
 
-    st.info("No requests found.")
+    c1,c2 = st.columns(2)
 
-    st.stop()
-
-incoming, history = st.tabs(
-    ["Incoming Requests",
-     "Past Requests"]
-)
-
-# -----------------------------------
-# Incoming Requests
-# -----------------------------------
-
-with incoming:
-
-    pending = requests_df[
-        requests_df["status"] == "Pending"
-    ]
-
-    for _, row in pending.iterrows():
-
-        st.subheader(
-            f"Request #{row['id']}"
+    with c1:
+        st.button(
+            f"Accept {i}",
+            use_container_width=True
         )
 
-        st.write(
-            f"Donation ID: {row['donation_id']}"
+    with c2:
+        st.button(
+            f"Reject {i}",
+            use_container_width=True
         )
 
-        col1,col2 = st.columns(2)
-
-        with col1:
-
-            if st.button(
-                f"Accept {row['id']}"
-            ):
-
-                conn = get_connection()
-
-                cursor = conn.cursor()
-
-                cursor.execute("""
-                UPDATE requests
-                SET status='Accepted'
-                WHERE id=?
-                """,(row["id"],))
-
-                conn.commit()
-                conn.close()
-
-                st.rerun()
-
-        with col2:
-
-            if st.button(
-                f"Reject {row['id']}"
-            ):
-
-                conn = get_connection()
-
-                cursor = conn.cursor()
-
-                cursor.execute("""
-                UPDATE requests
-                SET status='Rejected'
-                WHERE id=?
-                """,(row["id"],))
-
-                conn.commit()
-                conn.close()
-
-                st.rerun()
-
-        st.divider()
-
-# -----------------------------------
-# History
-# -----------------------------------
-
-with history:
-
-    history_df = requests_df[
-        requests_df["status"] != "Pending"
-    ]
-
-    st.dataframe(
-        history_df,
-        use_container_width=True
-    )
+    st.divider()

@@ -1,83 +1,44 @@
 import streamlit as st
-from auth import signup, login
+from components import load_css
 
 st.set_page_config(
     page_title="FoodLink",
-    page_icon="🍽️",
+    page_icon="🍏",
     layout="wide"
 )
 
-if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
+load_css()
 
-st.markdown("""
-# 🍽️ FoodLink
+left, right = st.columns([1,1])
 
-### Connecting surplus food with those who need it most
-""")
+with left:
 
-col1,col2,col3 = st.columns([1,2,1])
+    st.markdown("""
+    # 🍏 FoodLink
 
-with col2:
+    ## Connecting surplus food with those who need it most
 
-    tab1,tab2 = st.tabs(["Login","Sign Up"])
+    A digital platform that connects surplus food sources with NGOs for real-time redistribution and waste reduction.
+    """)
 
-    with tab1:
+    col1,col2 = st.columns(2)
 
-        email = st.text_input("Email")
-
-        password = st.text_input(
-            "Password",
-            type="password"
+    with col1:
+        st.button(
+            "Get Started",
+            use_container_width=True
         )
 
-        if st.button("Login"):
-
-            user = login(email,password)
-
-            if user:
-
-                st.session_state.logged_in = True
-                st.session_state.user_id = user[0]
-                st.session_state.name = user[1]
-                st.session_state.role = user[4]
-
-                st.success("Login Successful")
-
-            else:
-                st.error("Invalid Credentials")
-
-    with tab2:
-
-        name = st.text_input("Name")
-
-        new_email = st.text_input("New Email")
-
-        new_password = st.text_input(
-            "New Password",
-            type="password"
+    with col2:
+        st.button(
+            "I'm an NGO",
+            use_container_width=True
         )
 
-        role = st.selectbox(
-            "Role",
-            ["Donor","NGO"]
-        )
+with right:
 
-        if st.button("Create Account"):
-
-            if signup(
-                name,
-                new_email,
-                new_password,
-                role
-            ):
-                st.success("Account Created")
-
-            else:
-                st.error("Email already exists")
-
-st.divider()
-
-st.metric("Food Saved","2,500 kg")
-st.metric("Lives Impacted","8,200")
-st.metric("NGOs Connected","120")
+    # Replace with your image
+    st.image(
+        "assets/foodlink_hero.png",
+        use_container_width=True
+    )

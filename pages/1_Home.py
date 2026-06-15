@@ -1,53 +1,69 @@
 import streamlit as st
+from components import load_css, impact_card
 
-def load_css():
-
-    with open(
-        "assets/style.css"
-    ) as f:
-
-        st.markdown(
-            f"<style>{f.read()}</style>",
-            unsafe_allow_html=True
-        )
+st.set_page_config(
+    page_title="FoodLink",
+    layout="wide"
+)
 
 load_css()
 
-st.title("🏠 Home Dashboard")
+st.markdown("""
+<h2>Good Morning 👋</h2>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<div class="section-title">
+Today's Impact
+</div>
+""", unsafe_allow_html=True)
 
 c1,c2,c3 = st.columns(3)
 
 with c1:
-    st.metric("Food Saved","2500 kg")
+    impact_card("120 kg","Food Saved")
 
 with c2:
-    st.metric("NGOs Helped","56")
+    impact_card("8","NGOs Helped")
 
 with c3:
-    st.metric("Lives Impacted","8200")
+    impact_card("240","Lives Impacted")
 
-st.divider()
+st.markdown("<br>", unsafe_allow_html=True)
 
-st.subheader("Quick Actions")
+st.markdown("""
+<div class="section-title">
+Quick Actions
+</div>
+""", unsafe_allow_html=True)
 
-col1,col2,col3,col4 = st.columns(4)
+a1,a2,a3,a4 = st.columns(4)
 
-with col1:
-    st.button("➕ Post Food")
+with a1:
+    st.button("➕ Post Food", use_container_width=True)
 
-with col2:
-    st.button("🏢 Explore NGOs")
+with a2:
+    st.button("🏢 NGOs", use_container_width=True)
 
-with col3:
-    st.button("🚚 Track Donation")
+with a3:
+    st.button("🚚 Track", use_container_width=True)
 
-with col4:
-    st.button("📊 Dashboard")
+with a4:
+    st.button("📊 Impact", use_container_width=True)
 
-st.divider()
+st.markdown("<br>", unsafe_allow_html=True)
 
-st.subheader("Recent Activity")
+st.markdown("""
+<div class="section-title">
+Recent Activity
+</div>
+""", unsafe_allow_html=True)
 
-st.success("Donation delivered")
-st.info("NGO accepted request")
-st.success("Food pickup completed")
+activities = [
+    "20kg food donated to Helping Hands NGO",
+    "15kg vegetables claimed by Food For All",
+    "Donation delivered successfully"
+]
+
+for item in activities:
+    st.success(item)
