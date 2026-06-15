@@ -1,37 +1,79 @@
 import streamlit as st
-from components import load_css
-
-load_css()
 
 st.title("🚚 Track Donation")
 
-st.markdown("""
-### Donation Timeline
+donation_id = st.text_input(
+    "Donation ID"
+)
 
-✅ Posted
+st.divider()
 
-⬇️
+stage = "Picked Up"
 
-✅ Request Accepted
+progress = {
+    "Posted":25,
+    "Accepted":50,
+    "Picked Up":75,
+    "Delivered":100
+}
 
-⬇️
+st.progress(
+    progress[stage]
+)
 
-🟡 Picked Up
+c1,c2,c3,c4 = st.columns(4)
 
-⬇️
+c1.success("Posted")
+c2.success("Accepted")
+c3.success("Picked Up")
+c4.info("Delivered")
 
-⚪ Delivered
-""")
+st.divider()
 
-st.progress(0.75)
+st.subheader(
+    "Donation Details"
+)
 
-st.info("""
-NGO:
-Helping Hands
+left,right = st.columns(2)
 
-Driver:
-Rahul
+with left:
 
-ETA:
-25 minutes
-""")
+    st.write(
+        "**NGO:** Helping Hands"
+    )
+
+    st.write(
+        "**Volunteer:** Rahul"
+    )
+
+    st.write(
+        "**Pickup Time:** 2:30 PM"
+    )
+
+with right:
+
+    st.write(
+        "**Contact:** +91 XXXXX XXXXX"
+    )
+
+    st.write(
+        "**Status:** Picked Up"
+    )
+
+    st.write(
+        "**ETA:** 30 mins"
+    )
+
+st.divider()
+
+timeline = [
+    "Food Posted",
+    "NGO Accepted Request",
+    "Volunteer Assigned",
+    "Food Picked Up",
+    "On The Way",
+    "Delivered"
+]
+
+for item in timeline:
+    st.success(item)

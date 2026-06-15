@@ -1,33 +1,42 @@
 import streamlit as st
-from components import load_css
+from database import get_requests
 
-load_css()
+st.title("📥 NGO Requests")
 
-st.title("📨 NGO Requests")
+requests = get_requests()
 
-for i in range(5):
+pending, accepted, rejected = st.columns(3)
 
-    st.markdown(f"""
-    <div class="food-card">
-        <h4>Helping Hands NGO</h4>
-        <p>Requested: 20kg Cooked Food</p>
-        <p>Distance: 2 km</p>
-    </div>
-    """,
-    unsafe_allow_html=True)
+with pending:
 
-    c1,c2 = st.columns(2)
+    st.subheader("🟡 Pending")
 
-    with c1:
-        st.button(
-            f"Accept {i}",
-            use_container_width=True
-        )
+    for req in requests:
 
-    with c2:
-        st.button(
-            f"Reject {i}",
-            use_container_width=True
-        )
+        if req[3] == "Pending":
 
-    st.divider()
+            with st.container(border=True):
+
+                st.write(
+                    f"Food ID: {req[1]}"
+                )
+
+                st.write(
+                    f"NGO ID: {req[2]}"
+                )
+
+                st.button(
+                    f"Accept {req[0]}"
+                )
+
+                st.button(
+                    f"Reject {req[0]}"
+                )
+
+with accepted:
+
+    st.subheader("🟢 Accepted")
+
+with rejected:
+
+    st.subheader("🔴 Rejected")

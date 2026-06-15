@@ -1,66 +1,71 @@
 import streamlit as st
-from components import load_css
+import pandas as pd
+from database import get_available_food
 
-load_css()
+st.title("🗺️ Available Surplus Food")
 
-st.title("🗺 Available Surplus")
+c1, c2, c3 = st.columns(3)
 
-search = st.text_input(
-    "Search Food"
-)
-
-filters = st.columns(4)
-
-with filters[0]:
+with c1:
     st.selectbox(
         "Food Type",
-        [
-            "All",
-            "Cooked Food",
-            "Vegetables",
-            "Bakery"
-        ]
+        ["All","Cooked","Raw"]
     )
 
-with filters[1]:
+with c2:
     st.selectbox(
         "Distance",
-        [
-            "All",
-            "<5 km",
-            "<10 km"
-        ]
+        ["All","<5 km","<10 km"]
     )
 
-with filters[2]:
+with c3:
     st.selectbox(
         "Expiry",
-        [
-            "All",
-            "Expiring Soon"
-        ]
-    )
-
-with filters[3]:
-    st.button(
-        "Apply Filters"
+        ["All","Within 2 hrs"]
     )
 
 st.divider()
 
-for i in range(5):
+map_data = pd.DataFrame({
+    "lat":[17.3850,17.3950,17.4200],
+    "lon":[78.4867,78.4700,78.5000]
+})
 
-    st.markdown(f"""
-    <div class="food-card">
-        <h4>Fresh Bread</h4>
-        <p>Quantity: 20kg</p>
-        <p>Distance: 2 km</p>
-        <p>Expires in 4 hours</p>
-    </div>
-    """,
-    unsafe_allow_html=True)
+st.map(map_data)
 
-    st.button(
-        f"Claim Food {i}",
-        use_container_width=True
-    )
+st.divider()
+
+food_data = get_available_food()
+
+for food in food_data:
+
+    with st.container(border=True):
+
+        st.subheader(food[2])
+
+        c1, c2 = st.columns(2)
+
+        with c1:
+            st.write(
+                f"Quantity: {food[3]} kg"
+            )
+
+            st.write(
+                f"Location: {food[6]}"
+            )
+
+        with c2:
+            st.write(
+                f"Expiry: {food[5]}"
+            )
+
+            st.write(
+                f"Status: {food[8]}"
+            )
+
+        if st.button(
+            f"Claim Food #{food[0]}"
+        ):
+            st.success(
+                "Request sent successfully"
+            )

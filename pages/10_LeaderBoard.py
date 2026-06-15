@@ -1,57 +1,123 @@
 import streamlit as st
-from components import load_css
+import pandas as pd
 
-load_css()
+st.title("🥇 FoodLink Leaderboard")
 
-st.title("🏆 Community Leaderboard")
+st.markdown(
+    "### Top Contributors This Month"
+)
 
-st.subheader("Top 3 Champions")
+st.divider()
+
+# PODIUM
 
 c1, c2, c3 = st.columns(3)
 
 with c2:
-    st.success("""
-    🥇
 
-    ABC Restaurant
+    with st.container(border=True):
 
-    1500 Points
-    """)
+        st.markdown("# 🥇")
+        st.subheader("Sarah")
+        st.metric(
+            "Points",
+            "2450"
+        )
 
 with c1:
-    st.info("""
-    🥈
 
-    Fresh Mart
+    with st.container(border=True):
 
-    1200 Points
-    """)
+        st.markdown("# 🥈")
+        st.subheader("Rahul")
+        st.metric(
+            "Points",
+            "2200"
+        )
 
 with c3:
-    st.warning("""
-    🥉
 
-    Hotel Paradise
+    with st.container(border=True):
 
-    950 Points
-    """)
+        st.markdown("# 🥉")
+        st.subheader("Priya")
+        st.metric(
+            "Points",
+            "2050"
+        )
 
 st.divider()
 
-st.subheader("Rankings")
+st.subheader(
+    "Full Rankings"
+)
 
-rankings = [
-    ("4", "Food Junction", 700),
-    ("5", "Green Grocers", 550),
-    ("6", "City Bakery", 480),
-    ("7", "Royal Caterers", 430),
-]
+leaderboard = pd.DataFrame({
 
-for rank, name, points in rankings:
+    "Rank":[1,2,3,4,5,6,7,8],
+    "Name":[
+        "Sarah",
+        "Rahul",
+        "Priya",
+        "Ankit",
+        "Sneha",
+        "Aman",
+        "Rohan",
+        "Kiran"
+    ],
+    "Points":[
+        2450,
+        2200,
+        2050,
+        1800,
+        1700,
+        1600,
+        1500,
+        1400
+    ]
+})
 
-    st.markdown(f"""
-    <div class="ngo-card">
-        <h4>#{rank} {name}</h4>
-        <p>{points} Points</p>
-    </div>
-    """, unsafe_allow_html=True)
+st.dataframe(
+    leaderboard,
+    use_container_width=True
+)
+
+st.divider()
+
+col1, col2 = st.columns(2)
+
+with col1:
+
+    st.subheader(
+        "Top NGOs"
+    )
+
+    st.success(
+        "Helping Hands"
+    )
+
+    st.success(
+        "Care Foundation"
+    )
+
+    st.success(
+        "Food For All"
+    )
+
+with col2:
+
+    st.subheader(
+        "Top Food Categories"
+    )
+
+    st.info(
+        "Cooked Food"
+    )
+
+    st.info(
+        "Vegetables"
+    )
+
+    st.info(
+        "Bakery"
+    )

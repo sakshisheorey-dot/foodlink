@@ -1,39 +1,72 @@
 import streamlit as st
-from components import load_css
 
-load_css()
-
-st.title("🏆 Rewards")
+st.title("🏆 Rewards & Badges")
 
 st.metric(
-    "Points",
-    "1250"
+    "Current Points",
+    "1,250"
 )
 
-c1,c2,c3,c4 = st.columns(4)
+st.progress(0.75)
 
-with c1:
-    st.success(
-        "🥇 First Donation"
-    )
-
-with c2:
-    st.success(
-        "🌱 Eco Champion"
-    )
-
-with c3:
-    st.success(
-        "🍽 Food Saver"
-    )
-
-with c4:
-    st.success(
-        "🏅 10 Donations"
-    )
-
-st.progress(0.8)
-
-st.write(
-    "8 / 10 Donations"
+st.caption(
+    "750 / 1000 points for next badge"
 )
+
+st.divider()
+
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+
+    with st.container(border=True):
+
+        st.markdown("# 🥇")
+        st.subheader(
+            "First Donation"
+        )
+
+with col2:
+
+    with st.container(border=True):
+
+        st.markdown("# 🌱")
+        st.subheader(
+            "Food Saver"
+        )
+
+with col3:
+
+    with st.container(border=True):
+
+        st.markdown("# ♻️")
+        st.subheader(
+            "Eco Champion"
+        )
+
+with col4:
+
+    with st.container(border=True):
+
+        st.markdown("# 🏅")
+        st.subheader(
+            "10 Donations"
+        )
+
+st.divider()
+
+st.subheader("How Rewards Work")
+
+st.info("""
+1. Donate food
+
+2. NGO accepts request
+
+3. Delivery completed
+
+4. Earn points
+
+5. Unlock badges
+
+6. Climb leaderboard
+""")

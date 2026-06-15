@@ -1,35 +1,60 @@
 import streamlit as st
 
-def load_css():
-    with open("assets/style.css") as f:
-        st.markdown(
-            f"<style>{f.read()}</style>",
-            unsafe_allow_html=True
-        )
 
-def impact_card(value, label):
+def metric_card(title, value, delta=""):
     st.markdown(f"""
-    <div class="impact-card">
-        <div class="metric-number">{value}</div>
-        <div class="metric-label">{label}</div>
+    <div class='metric-card'>
+        <h4>{title}</h4>
+        <h2>{value}</h2>
+        <p>{delta}</p>
     </div>
     """, unsafe_allow_html=True)
 
-def food_card(name, quantity, location, expiry):
+
+def section_header(title):
+    st.markdown(
+        f"<h2>{title}</h2>",
+        unsafe_allow_html=True
+    )
+
+
+def donation_card(
+        title,
+        quantity,
+        location,
+        status):
+
     st.markdown(f"""
-    <div class="food-card">
-        <h4>{name}</h4>
-        <p>Quantity: {quantity}</p>
+    <div class='food-card'>
+        <h4>{title}</h4>
+        <p>Quantity: {quantity} kg</p>
         <p>Location: {location}</p>
-        <p>Expires: {expiry}</p>
+        <p>Status: {status}</p>
     </div>
     """, unsafe_allow_html=True)
 
-def ngo_card(name, cause, rating):
+
+def badge_card(
+        badge,
+        description):
+
     st.markdown(f"""
-    <div class="ngo-card">
+    <div class='badge-card'>
+        <h3>{badge}</h3>
+        <p>{description}</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+
+def leaderboard_card(
+        rank,
+        name,
+        score):
+
+    st.markdown(f"""
+    <div class='leader-card'>
+        <h3>#{rank}</h3>
         <h4>{name}</h4>
-        <p>{cause}</p>
-        <p>⭐ {rating}</p>
+        <p>{score} pts</p>
     </div>
     """, unsafe_allow_html=True)

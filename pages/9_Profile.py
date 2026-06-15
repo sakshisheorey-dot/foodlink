@@ -1,61 +1,73 @@
 import streamlit as st
-from components import load_css
-
-load_css()
 
 st.title("👤 Profile")
 
-st.image(
-    "https://via.placeholder.com/150",
-    width=120
-)
+col1, col2 = st.columns([1,2])
 
-st.subheader(
-    "Sakshi Sheorey"
-)
+with col1:
 
-st.write(
-    "Donor"
-)
+    st.image(
+        "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+        width=180
+    )
 
-c1,c2,c3 = st.columns(3)
+    st.subheader("John Doe")
 
-with c1:
-    st.metric(
+    st.caption("Food Donor")
+
+with col2:
+
+    st.subheader("Statistics")
+
+    c1, c2, c3 = st.columns(3)
+
+    c1.metric(
         "Donations",
-        15
+        "48"
     )
 
-with c2:
-    st.metric(
+    c2.metric(
         "Food Saved",
-        "520 kg"
+        "1250 kg"
     )
 
-with c3:
-    st.metric(
+    c3.metric(
         "NGOs Helped",
-        12
+        "38"
     )
 
 st.divider()
 
+st.subheader("Recent Activity")
+
+st.success(
+    "40kg food delivered successfully"
+)
+
+st.success(
+    "Earned Food Saver badge"
+)
+
+st.success(
+    "New NGO connection established"
+)
+
+st.divider()
+
+st.subheader("Account Settings")
+
 st.button(
-    "Notifications",
-    use_container_width=True
+    "🔔 Notifications"
 )
 
 st.button(
-    "Settings",
-    use_container_width=True
+    "⚙️ Settings"
 )
 
 st.button(
-    "Help & Support",
-    use_container_width=True
+    "❓ Help & Support"
 )
 
 st.button(
-    "About FoodLink",
-    use_container_width=True
+    "ℹ️ About FoodLink"
 )

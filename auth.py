@@ -1,43 +1,65 @@
-import sqlite3
+import bcrypt
+import streamlit as st
 
-DB_NAME = "foodlink.db"
+from database import (
+    create_user,
+    get_user_by_email
+)
 
 
-def signup(name, email, password, role):
+def hash_password(password):
+    return bcrypt.hashpw(
+        password.encode(),
+        bcrypt.gensalt()
+    ).decode()
 
-    conn = sqlite3.connect(DB_NAME)
-    cursor = conn.cursor()
 
-    try:
-        cursor.execute("""
-        INSERT INTO users
-        (name,email,password,role)
-        VALUES (?,?,?,?)
-        """, (name,email,password,role))
+def verify_password(password, hashed):
+    return bcrypt.checkpw(
+        password.encode(),
+        hashed.encode()
+    )
 
-        conn.commit()
-        return True
 
-    except:
+def register_user(name, email, password, role):
+
+    existing = get_user_by_email(email)
+
+    if existing:
         return False
 
-    finally:
-        conn.close()
+    hashed = hash_password(password)
+
+    create_user(
+        name,
+        email,
+        hashed,
+        role
+    )
+
+    return True
 
 
-def login(email,password):
+def login_user(email, password):
 
-    conn = sqlite3.connect(DB_NAME)
+    user = get_user_by_email(email)
 
-    cursor = conn.cursor()
+    if not user:
+        return None
 
-    cursor.execute("""
-    SELECT * FROM users
-    WHERE email=? AND password=?
-    """,(email,password))
+    if verify_password(password, user[3]):
 
-    user = cursor.fetchone()
+        st.session_state.user = {
+            "id": user[0],
+            "name": user[1],
+            "email": user[2],
+            "role": user[4]
+        }
 
-    conn.close()
+        return user
 
-    return user
+    return None
+
+
+def logout():
+    st.session_state.clear()

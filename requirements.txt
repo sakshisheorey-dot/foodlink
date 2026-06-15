@@ -1,11 +1,12 @@
 streamlit
+streamlit-option-menu
+streamlit-folium
+folium
+plotly
 pandas
 numpy
-plotly
-folium
-streamlit-folium
-Pillow
-streamlit-option-menu
-streamlit-authenticator
-sqlite-utils
+bcrypt
+sqlalchemy
+pillow
+faker
 

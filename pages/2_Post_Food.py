@@ -1,70 +1,64 @@
 import streamlit as st
-from components import load_css, section_title
+from database import create_food_post
 
-load_css()
+st.title("🍱 Post Surplus Food")
 
-st.title("🍽 Post Surplus Food")
+with st.form("food_form"):
 
-left,right = st.columns([2,1])
+    c1, c2 = st.columns(2)
 
-with left:
+    with c1:
 
-    section_title("Food Details")
+        food_type = st.selectbox(
+            "Food Category",
+            [
+                "Cooked Food",
+                "Raw Ingredients",
+                "Bakery",
+                "Fruits",
+                "Vegetables"
+            ]
+        )
 
-    category = st.selectbox(
-        "Category",
-        [
-            "Cooked Food",
-            "Vegetables",
-            "Fruits",
-            "Bakery"
-        ]
-    )
+        quantity = st.number_input(
+            "Quantity (kg)",
+            min_value=1
+        )
 
-    quantity = st.number_input(
-        "Quantity (kg)",
-        min_value=1
-    )
+        expiry = st.datetime_input(
+            "Expiry Time"
+        )
 
-    expiry = st.date_input(
-        "Expiry Date"
-    )
+    with c2:
 
-    location = st.text_input(
-        "Pickup Location"
-    )
+        location = st.text_area(
+            "Pickup Location"
+        )
+
+        image = st.file_uploader(
+            "Food Image"
+        )
 
     description = st.text_area(
         "Description"
     )
 
-with right:
-
-    section_title("Food Photo")
-
-    image = st.file_uploader(
-        "Upload Image"
+    submit = st.form_submit_button(
+        "Post Donation"
     )
 
-    if image:
-        st.image(
-            image,
-            use_container_width=True
-        )
+if submit:
 
-st.divider()
+    create_food_post(
+        donor_id=1,
+        food_type=food_type,
+        quantity=quantity,
+        description=description,
+        expiry_time=str(expiry),
+        location=location,
+        image_path=""
+    )
 
-section_title("Safety Checklist")
-
-st.checkbox("Properly Packed")
-st.checkbox("Fresh Condition")
-st.checkbox("Within Expiry")
-st.checkbox("Stored Hygienically")
-
-if st.button(
-    "Post Donation",
-    use_container_width=True
-):
     st.success(
-        "Donation Posted Successfully"
+        "Food posted successfully!"
     )
