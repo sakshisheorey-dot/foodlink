@@ -1,5 +1,8 @@
 import streamlit as st
 
+if "user" not in st.session_state:
+    st.stop()
+
 st.title("👤 Profile")
 
 col1, col2 = st.columns([1,2])

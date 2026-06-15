@@ -1,6 +1,26 @@
 import streamlit as st
 from database import create_food_post
 
+import streamlit as st
+from database import create_food_post
+
+# Authentication Check
+if "user" not in st.session_state:
+    st.warning("Please login first")
+    st.stop()
+
+# Donor Check
+if st.session_state.user["role"] != "Donor":
+    st.warning("This page is only available for Donors")
+    st.stop()
+
+st.title("🍱 Post Surplus Food")
+
+# Rest of your code...
+
+if "user" not in st.session_state:
+    st.stop()
+
 st.title("🍱 Post Surplus Food")
 
 with st.form("food_form"):

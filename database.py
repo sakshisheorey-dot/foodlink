@@ -305,3 +305,121 @@ def get_food_count():
     conn.close()
 
     return count
+
+def add_points(user_id, points):
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    UPDATE users
+    SET points = points + ?
+    WHERE id=?
+    """,
+    (points, user_id))
+
+    conn.commit()
+    conn.close()
+
+def assign_badges(user_id):
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT points
+    FROM users
+    WHERE id=?
+    """,(user_id,))
+
+    points = cursor.fetchone()[0]
+
+    badges = []
+
+    if points >= 100:
+        badges.append(
+            "First Donation"
+        )
+
+    if points >= 500:
+        badges.append(
+            "Food Saver"
+        )
+
+    if points >= 1000:
+        badges.append(
+            "Eco Champion"
+        )
+
+    for badge in badges:
+
+        cursor.execute("""
+        INSERT INTO badges(
+            user_id,
+            badge_name
+        )
+        VALUES(?,?)
+        """,
+        (user_id,badge))
+
+    conn.commit()
+    conn.close()
+
+def set_donation_stage(
+        food_id,
+        stage):
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    INSERT INTO donation_tracking(
+        food_id,
+        current_stage
+    )
+    VALUES(?,?)
+    """,
+    (
+        food_id,
+        stage
+    ))
+
+    conn.commit()
+    conn.close()
+
+def get_leaderboard():
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT name,
+           points
+    FROM users
+    ORDER BY points DESC
+    LIMIT 20
+    """)
+
+    rows = cursor.fetchall()
+
+    conn.close()
+
+    return rows
+
+def get_leaderboard():
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT name, points
+    FROM users
+    ORDER BY points DESC
+    LIMIT 20
+    """)
+
+    data = cursor.fetchall()
+
+    conn.close()
+
+    return data

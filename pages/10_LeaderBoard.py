@@ -1,5 +1,9 @@
 import streamlit as st
 import pandas as pd
+from database import get_leaderboard
+
+if "user" not in st.session_state:
+    st.stop()
 
 st.title("🥇 FoodLink Leaderboard")
 
@@ -52,33 +56,30 @@ st.subheader(
     "Full Rankings"
 )
 
-leaderboard = pd.DataFrame({
+from database import get_leaderboard
 
-    "Rank":[1,2,3,4,5,6,7,8],
-    "Name":[
-        "Sarah",
-        "Rahul",
-        "Priya",
-        "Ankit",
-        "Sneha",
-        "Aman",
-        "Rohan",
-        "Kiran"
-    ],
-    "Points":[
-        2450,
-        2200,
-        2050,
-        1800,
-        1700,
-        1600,
-        1500,
-        1400
-    ]
-})
+st.subheader("Full Rankings")
+
+leaders = get_leaderboard()
+
+rank_data = []
+
+rank = 1
+
+for name, points in leaders:
+
+    rank_data.append({
+        "Rank": rank,
+        "Name": name,
+        "Points": points
+    })
+
+    rank += 1
+
+leaderboard_df = pd.DataFrame(rank_data)
 
 st.dataframe(
-    leaderboard,
+    leaderboard_df,
     use_container_width=True
 )
 

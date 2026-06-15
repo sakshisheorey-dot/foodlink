@@ -1,5 +1,8 @@
 import streamlit as st
 
+if "user" not in st.session_state:
+    st.stop()
+
 st.title("🚚 Track Donation")
 
 donation_id = st.text_input(

@@ -3,6 +3,7 @@ from PIL import Image
 
 from database import init_db
 from auth import register_user, login_user, logout
+from auth import logout
 
 
 # ---------------------------------------------------
@@ -218,59 +219,111 @@ def sidebar():
 
     with st.sidebar:
 
+        # -----------------------------
+        # LOGO
+        # -----------------------------
         display_logo()
 
+        st.markdown("## 🌱 FoodLink")
+
         st.markdown("---")
 
+        # -----------------------------
+        # USER INFO
+        # -----------------------------
         st.write(
-            f"Welcome, "
-            f"{st.session_state.user['name']}"
+            f"### Welcome, {st.session_state.user['name']}"
         )
 
-        st.caption(
-            st.session_state.user["role"]
-        )
+        role = st.session_state.user["role"]
+
+        if role == "Donor":
+            st.success("👤 Donor")
+
+        elif role == "NGO":
+            st.info("🏢 NGO")
+
+        elif role == "Admin":
+            st.warning("🛡️ Admin")
 
         st.markdown("---")
+
+        # -----------------------------
+        # NOTIFICATIONS
+        # -----------------------------
+        with st.expander("🔔 Notifications", expanded=False):
+
+            st.info(
+                "Your latest donation was delivered."
+            )
+
+            st.info(
+                "A new NGO is available nearby."
+            )
+
+            st.info(
+                "You earned 50 reward points."
+            )
+
+        st.markdown("---")
+
+        # -----------------------------
+        # ROLE BASED MENU
+        # -----------------------------
 
         st.page_link(
             "pages/1_Home.py",
             label="🏠 Dashboard"
         )
 
-        st.page_link(
-            "pages/2_Post_Food.py",
-            label="🍱 Post Food"
-        )
+        # DONOR PAGES
+        if role == "Donor":
 
-        st.page_link(
-            "pages/3_Available_Surplus.py",
-            label="🗺️ Available Surplus"
-        )
+            st.page_link(
+                "pages/2_Post_Food.py",
+                label="🍱 Post Food"
+            )
 
-        st.page_link(
-            "pages/4_NGO_Requests.py",
-            label="📥 NGO Requests"
-        )
+            st.page_link(
+                "pages/7_Explore_NGOs.py",
+                label="🏢 Explore NGOs"
+            )
 
+            st.page_link(
+                "pages/8_Rewards.py",
+                label="🏆 Rewards"
+            )
+
+        # NGO PAGES
+        elif role == "NGO":
+
+            st.page_link(
+                "pages/3_Available_Surplus.py",
+                label="🗺️ Available Surplus"
+            )
+
+            st.page_link(
+                "pages/4_NGO_Requests.py",
+                label="📥 NGO Requests"
+            )
+
+        # ADMIN PAGES
+        elif role == "Admin":
+
+            st.page_link(
+                "pages/11_Admin.py",
+                label="🛡️ Admin Dashboard"
+            )
+
+        # COMMON PAGES
         st.page_link(
             "pages/5_Track_Donations.py",
-            label="🚚 Tracking"
+            label="🚚 Track Donations"
         )
 
         st.page_link(
             "pages/6_Impact_Dashboard.py",
             label="📈 Impact Dashboard"
-        )
-
-        st.page_link(
-            "pages/7_Explore_NGOs.py",
-            label="🏢 Explore NGOs"
-        )
-
-        st.page_link(
-            "pages/8_Rewards.py",
-            label="🏆 Rewards"
         )
 
         st.page_link(
@@ -285,8 +338,35 @@ def sidebar():
 
         st.markdown("---")
 
+        # -----------------------------
+        # QUICK STATS
+        # -----------------------------
+        st.markdown("### 📊 Quick Stats")
+
+        st.metric(
+            "Food Saved",
+            "1,250 kg"
+        )
+
+        st.metric(
+            "Lives Impacted",
+            "2,450"
+        )
+
+        st.metric(
+            "NGOs Helped",
+            "38"
+        )
+
+        st.markdown("---")
+
+        # -----------------------------
+        # LOGOUT
+        # -----------------------------
         if st.button(
-                "Logout"):
+            "🚪 Logout",
+            use_container_width=True
+        ):
 
             logout()
             st.rerun()

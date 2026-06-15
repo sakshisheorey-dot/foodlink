@@ -1,6 +1,12 @@
 import streamlit as st
 import pandas as pd
 from database import get_available_food
+from database import create_request
+import folium
+from streamlit_folium import st_folium
+
+if "user" not in st.session_state:
+    st.stop()
 
 st.title("🗺️ Available Surplus Food")
 
@@ -64,8 +70,33 @@ for food in food_data:
             )
 
         if st.button(
-            f"Claim Food #{food[0]}"
-        ):
-            st.success(
-                "Request sent successfully"
+    f"Claim Food #{food[0]}"
+):
+
+            create_request(
+                food[0],
+                st.session_state.user["id"]
+    )
+
+    st.success(
+        "Claim Request Sent"
+    )
+    st.success(
+        "Request sent successfully"
             )
+    
+m = folium.Map(
+    location=[17.3850,78.4867],
+    zoom_start=11
+)
+
+folium.Marker(
+    [17.3850,78.4867],
+    popup="Food Donation"
+).add_to(m)
+
+st_folium(
+    m,
+    width=1200,
+    height=500
+)
