@@ -1,3 +1,16 @@
+def load_css():
+
+    with open(
+        "assets/style.css"
+    ) as f:
+
+        st.markdown(
+            f"<style>{f.read()}</style>",
+            unsafe_allow_html=True
+        )
+
+load_css()
+
 import streamlit as st
 import pandas as pd
 from database import get_all_donations
