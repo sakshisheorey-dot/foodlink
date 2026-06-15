@@ -1,0 +1,11 @@
+streamlit
+pandas
+numpy
+plotly
+folium
+streamlit-folium
+Pillow
+streamlit-option-menu
+streamlit-authenticator
+sqlite-utils
+
