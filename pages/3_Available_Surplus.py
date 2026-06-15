@@ -1,3 +1,5 @@
+import streamlit as st
+
 def load_css():
 
     with open(
@@ -11,7 +13,6 @@ def load_css():
 
 load_css()
 
-import streamlit as st
 import pandas as pd
 from database import get_all_donations
 from database import create_request

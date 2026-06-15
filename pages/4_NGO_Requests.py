@@ -1,3 +1,8 @@
+import streamlit as st
+
+from turtle import st
+
+
 def load_css():
 
     with open(
@@ -11,7 +16,6 @@ def load_css():
 
 load_css()
 
-import streamlit as st
 from database import get_requests
 from database import get_connection
 

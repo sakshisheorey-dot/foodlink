@@ -1,3 +1,5 @@
+import streamlit as st
+
 def load_css():
 
     with open(
@@ -10,8 +12,6 @@ def load_css():
         )
 
 load_css()
-
-import streamlit as st
 
 st.title("🏠 Home Dashboard")
 
